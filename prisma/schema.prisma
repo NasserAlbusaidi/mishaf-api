@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:@localhost:3306/mushaf"
+  url      = env("DATABASE_URL")
 }
 
 model quarter {
@@ -29,23 +29,37 @@ model quarter_1 {
   startingjuzzIndex Boolean @default(false)
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model surah {
+  number         Int    @id
+  name           String @db.VarChar(100)
+  englishName    String @db.VarChar(100)
+  numberOfAyahs  Int
+  revelationType String @db.VarChar(100)
+  first_page_num Int?
+}
+
+model surah2 {
+  id              Int    @id
+  name            String @db.VarChar(255)
+  transliteration Int
+  type            Int
+  total_verses    Int
+  link            String @db.VarChar(255)
+}
+
 model quran_ayat {
   index     Int     @id @default(autoincrement())
   sura      Int     @default(0)
   aya       Int     @default(0)
   text      String  @db.Text
   simple    String? @db.Text
-  juz       Int?    @db.SmallInt
+  juz       Int?
   hezb      Int?    @db.SmallInt
   page      Int?    @db.SmallInt
   rub       Int?
   verse_key String? @db.VarChar(50)
-
-  @@ignore
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model quran_word {
   id          Int     @id @default(autoincrement())
   index       String  @db.VarChar(100)
@@ -68,24 +82,4 @@ model quran_word {
   translation String? @db.VarChar(100)
   nim         String  @db.VarChar(100)
   audio_key   String? @db.VarChar(100)
-
-  @@ignore
-}
-
-model surah {
-  number         Int    @id
-  name           String @db.VarChar(100)
-  englishName    String @db.VarChar(100)
-  numberOfAyahs  Int
-  revelationType String @db.VarChar(100)
-  first_page_num Int?
-}
-
-model surah2 {
-  id              Int    @id
-  name            String @db.VarChar(255)
-  transliteration Int
-  type            Int
-  total_verses    Int
-  link            String @db.VarChar(255)
 }
