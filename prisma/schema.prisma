@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model quarter {
+  hezb              Int
+  page              Int
+  juz               String  @db.VarChar(255)
+  rub               Int     @id @default(autoincrement())
+  text              String  @db.LongText
+  startingjuzzIndex Boolean @default(false)
+  startingHizbIndex Boolean @default(false)
+  quarterAyaNum     Int
+  surah             Int
+  surahTitle        String  @db.VarChar(255)
+}
+
+model quarter_1 {
+  hezb              Int
+  page              Int
+  juz               Int
+  rub               Int     @id @default(autoincrement())
+  text              String  @db.LongText
+  startingjuzzIndex Boolean @default(false)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model quran_ayat {
+  index     Int     @id @default(autoincrement())
+  sura      Int     @default(0)
+  aya       Int     @default(0)
+  text      String  @db.Text
+  simple    String? @db.Text
+  juz       Int?    @db.SmallInt
+  hezb      Int?    @db.SmallInt
+  page      Int?    @db.SmallInt
+  rub       Int?
+  verse_key String? @db.VarChar(50)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model quran_word {
+  id          Int     @id @default(autoincrement())
+  index       String  @db.VarChar(100)
+  aya         String  @db.VarChar(100)
+  sura        String  @db.VarChar(100)
+  position    String  @db.VarChar(100)
+  verse_key   String  @db.VarChar(100)
+  text        String? @db.VarChar(100)
+  simple      String? @db.VarChar(100)
+  juz         String  @db.VarChar(100)
+  hizb        String  @db.VarChar(100)
+  rub         String  @db.VarChar(100)
+  page        String  @db.VarChar(100)
+  class_name  String  @db.VarChar(100)
+  line        String  @db.VarChar(100)
+  code        String  @db.VarChar(100)
+  code_v3     String  @db.VarChar(100)
+  char_type   String  @db.VarChar(100)
+  audio       String? @db.VarChar(100)
+  translation String? @db.VarChar(100)
+  nim         String  @db.VarChar(100)
+  audio_key   String? @db.VarChar(100)
+
+  @@ignore
+}
+
+model surah {
+  number         Int    @id
+  name           String @db.VarChar(100)
+  englishName    String @db.VarChar(100)
+  numberOfAyahs  Int
+  revelationType String @db.VarChar(100)
+  first_page_num Int?
+}
+
+model surah2 {
+  id              Int    @id
+  name            String @db.VarChar(255)
+  transliteration Int
+  type            Int
+  total_verses    Int
+  link            String @db.VarChar(255)
+}
